@@ -17,9 +17,28 @@ class ProductController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->get()->map(function ($p) {
+        $query = \App\Models\Product::with('category');
+    
+        // Filtros dinâmicos
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+    
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+    
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+    
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+    
+        $products = $query->get()->map(function ($p) {
             return [
                 'id' => $p->id,
                 'name' => $p->name,
@@ -27,15 +46,18 @@ class ProductController extends Controller
                 'quantity' => $p->quantity,
                 'price' => $p->price,
                 'sku' => $p->sku,
-                'category_name' => $p->category?->name, // vem do accessor
+                'category_name' => $p->category?->name,
             ];
         });
-
+    
         return Inertia::render('Products/Index', [
             'products' => $products,
             'user' => auth()->user(),
+            'filters' => $request->only(['name', 'category_id', 'min_price', 'max_price']),
+            'categories' => \App\Models\Category::select('id', 'name')->get(),
         ]);
     }
+    
 
 
     public function store(ProductStoreRequest $request)
