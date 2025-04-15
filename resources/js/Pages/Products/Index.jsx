@@ -146,23 +146,28 @@ export default function ProductsIndex({ products, user, categories, filters }) {
                   <td className="px-6 py-3">{prod.quantity}</td>
                   <td className="px-6 py-3">{prod.sku}</td>
                   <td className="px-6 py-3 text-right space-x-4">
+                    {(user.role === 'admin' || user.role === 'operador') && (
+                      <Link
+                        href={route('products.edit', prod.id)}
+                        method="get"
+                        as="button"
+                        className="text-sm text-blue-600 hover:underline"
+                      >
+                        Editar
+                      </Link>
+
+                    )}
+
                     {user.role === 'admin' && (
-                      <>
-                        <Link
-                          href={route('products.edit', prod.id)}
-                          className="text-sm text-blue-600 hover:underline"
-                        >
-                          Editar
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(prod.id)}
-                          className="text-sm text-red-600 hover:underline"
-                        >
-                          Excluir
-                        </button>
-                      </>
+                      <button
+                        onClick={() => handleDelete(prod.id)}
+                        className="text-sm text-red-600 hover:underline"
+                      >
+                        Excluir
+                      </button>
                     )}
                   </td>
+
                 </tr>
               ))}
               {products.length === 0 && (

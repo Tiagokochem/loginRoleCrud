@@ -67,9 +67,16 @@ Route::middleware('auth')->group(function () {
 | Rotas de Produtos (painel web)
 |--------------------------------------------------------------------------
 */
+// Listagem
 Route::middleware(['auth'])->get('/products', [ProductController::class, 'index'])->name('products.index');
 
+// Editar / Atualizar (admin e operador)
+Route::middleware(['auth', CheckRole::class . ':admin,operador'])->group(function () {
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+});
 
+// Criar / Deletar (apenas admin)
 Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::get('/products/create', function () {
         return Inertia::render('Products/Create', [
@@ -82,10 +89,6 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 });
 
-Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-});
 
 
 /*

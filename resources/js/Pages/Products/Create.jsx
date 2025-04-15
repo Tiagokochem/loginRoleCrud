@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
-import { Head, usePage } from '@inertiajs/react';
+import React from 'react';
+import { Head, useForm, usePage, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Link } from '@inertiajs/inertia-react';
 
 export default function Create({ user, categories }) {
   const { auth } = usePage().props;
 
-  const [form, setForm] = useState({
+  const {
+    data,
+    setData,
+    post,
+    processing,
+    errors,
+    reset,
+  } = useForm({
     name: '',
     description: '',
     quantity: '',
@@ -16,13 +21,15 @@ export default function Create({ user, categories }) {
     sku: '',
   });
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setData(e.target.name, e.target.value);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    Inertia.post(route('products.store'), form);
+    post(route('products.store'), {
+      onSuccess: () => reset(),
+    });
   };
 
   return (
@@ -58,18 +65,22 @@ export default function Create({ user, categories }) {
                 <label className="block text-sm font-medium text-gray-700">Nome</label>
                 <input
                   name="name"
-                  className="w-full border rounded p-2"
+                  value={data.name}
                   onChange={handleChange}
+                  className="w-full border rounded p-2"
                 />
+                {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">Descrição</label>
                 <textarea
                   name="description"
-                  className="w-full border rounded p-2"
+                  value={data.description}
                   onChange={handleChange}
+                  className="w-full border rounded p-2"
                 ></textarea>
+                {errors.description && <p className="text-red-600 text-sm">{errors.description}</p>}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -78,9 +89,11 @@ export default function Create({ user, categories }) {
                   <input
                     name="quantity"
                     type="number"
-                    className="w-full border rounded p-2"
+                    value={data.quantity}
                     onChange={handleChange}
+                    className="w-full border rounded p-2"
                   />
+                  {errors.quantity && <p className="text-red-600 text-sm">{errors.quantity}</p>}
                 </div>
 
                 <div>
@@ -88,26 +101,29 @@ export default function Create({ user, categories }) {
                   <input
                     name="price"
                     type="number"
-                    className="w-full border rounded p-2"
+                    value={data.price}
                     onChange={handleChange}
+                    className="w-full border rounded p-2"
                   />
+                  {errors.price && <p className="text-red-600 text-sm">{errors.price}</p>}
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Categoria</label>
                   <select
                     name="category_id"
-                    className="w-full border rounded p-2"
+                    value={data.category_id}
                     onChange={handleChange}
-                    value={form.category_id}
+                    className="w-full border rounded p-2"
                   >
                     <option value="">Selecione...</option>
-                    {categories.map(c => (
+                    {categories.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.name}
                       </option>
                     ))}
                   </select>
+                  {errors.category_id && <p className="text-red-600 text-sm">{errors.category_id}</p>}
                 </div>
               </div>
 
@@ -115,15 +131,18 @@ export default function Create({ user, categories }) {
                 <label className="block text-sm font-medium text-gray-700">SKU</label>
                 <input
                   name="sku"
-                  className="w-full border rounded p-2"
+                  value={data.sku}
                   onChange={handleChange}
+                  className="w-full border rounded p-2"
                 />
+                {errors.sku && <p className="text-red-600 text-sm">{errors.sku}</p>}
               </div>
 
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  disabled={processing}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
                 >
                   Cadastrar
                 </button>

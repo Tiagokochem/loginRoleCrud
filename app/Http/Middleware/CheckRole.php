@@ -9,8 +9,16 @@ class CheckRole
 {
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!in_array(auth()->user()?->role, $roles)) {
-            return response()->json(['error' => 'Acesso não autorizado.'], 403);
+        $user = auth()->user();
+
+        if (!$user || !in_array($user->role, $roles)) {
+            // Se a requisição for para API ou JSON
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json(['error' => 'Acesso não autorizado.'], 403);
+            }
+
+            // Caso contrário, redireciona com mensagem flash (Inertia)
+            return redirect()->route('dashboard')->with('error', 'Acesso não autorizado.');
         }
 
         return $next($request);

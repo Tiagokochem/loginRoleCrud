@@ -95,6 +95,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
+
         return Inertia::render('Products/Edit', [
             'product' => $product->load('category'),
             'categories' => \App\Models\Category::select('id', 'name')->get(),
