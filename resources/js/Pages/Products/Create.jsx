@@ -4,7 +4,7 @@ import { Head, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/inertia-react';
 
-export default function Create({ user }) {
+export default function Create({ user, categories }) {
   const { auth } = usePage().props;
 
   const [form, setForm] = useState({
@@ -12,7 +12,7 @@ export default function Create({ user }) {
     description: '',
     quantity: '',
     price: '',
-    category: '',
+    category_id: '',
     sku: '',
   });
 
@@ -52,7 +52,6 @@ export default function Create({ user }) {
             </Link>
           </div>
 
-          {/* Formulário */}
           <div className="bg-white shadow rounded p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -96,11 +95,19 @@ export default function Create({ user }) {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Categoria</label>
-                  <input
-                    name="category"
+                  <select
+                    name="category_id"
                     className="w-full border rounded p-2"
                     onChange={handleChange}
-                  />
+                    value={form.category_id}
+                  >
+                    <option value="">Selecione...</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRole;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -46,12 +47,14 @@ Route::middleware(['auth'])->get('/products', function () {
     ]);
 })->name('products.index');
 
-
 Route::middleware(['auth', CheckRole::class . ':admin'])->get('/products/create', function () {
     return Inertia::render('Products/Create', [
         'user' => auth()->user(),
+        'categories' => Category::select('id', 'name')->get(),
     ]);
 })->name('products.create');
+
+
 
 
 require __DIR__.'/auth.php';
