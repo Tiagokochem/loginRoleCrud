@@ -4,6 +4,9 @@ Este projeto que consiste consiste em um sistema completo de controle de estoque
 
 ---
 
+📄 [Versão em Inglês](./README_EN.md)
+
+
 ## 🚀 Tecnologias Utilizadas
 
 - Laravel 12 (API REST)
@@ -27,10 +30,12 @@ Este projeto que consiste consiste em um sistema completo de controle de estoque
 ---
 
 ## ✅ 🧙 Usuários de Teste
-          Nome	    Email	                  Senha	          Role
-Admin     User	    admin@teste.com	        password	      admin
-Operador  User	    operador@teste.com	    password	      operador
-Usuário   Comum	    usuario@teste.com	      password	      usuario
+
+| Nome           | Email               | Senha     | Permissão  |
+|----------------|---------------------|-----------|------------|
+| Admin User     | admin@teste.com     | password  | admin      |
+| Operador User  | operador@teste.com  | password  | operador   |
+| Usuário Comum  | usuario@teste.com   | password  | usuario    |
 
 
 
