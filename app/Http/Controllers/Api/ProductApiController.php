@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductStoreRequest;
 use App\Models\Product;
 use App\Services\ProductService;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
+use Illuminate\Http\JsonResponse;
 
-class ProductController extends Controller
+class ProductApiController extends Controller
 {
     protected ProductService $service;
 
@@ -22,14 +24,15 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function store(ProductStoreRequest $request)
-{
-    $product = $this->service->create($request->validated());
+    public function store(ProductStoreRequest $request): JsonResponse
+    {
+        $product = $this->service->create($request->validated());
 
-    return redirect()->route('products.index')
-                     ->with('success', 'Produto cadastrado com sucesso!');
-}
-
+        return response()->json([
+            'message' => 'Produto cadastrado com sucesso.',
+            'data' => $product,
+        ], 201);
+    }
 
     public function show(Product $product)
     {
