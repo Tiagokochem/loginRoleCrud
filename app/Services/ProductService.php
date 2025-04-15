@@ -13,7 +13,7 @@ class ProductService
 
     public function listAll()
     {
-        return Product::all();
+        return Product::with('category')->get(); 
     }
 
     public function find(int $id): ?Product

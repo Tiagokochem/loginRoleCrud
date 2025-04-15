@@ -4,33 +4,33 @@ import { Head, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/inertia-react';
 
-export default function Create({ user, categories }) {
+export default function Edit({ product, categories, user }) {
   const { auth } = usePage().props;
 
   const [form, setForm] = useState({
-    name: '',
-    description: '',
-    quantity: '',
-    price: '',
-    category_id: '',
-    sku: '',
+    name: product.name || '',
+    description: product.description || '',
+    quantity: product.quantity || '',
+    price: product.price || '',
+    sku: product.sku || '',
+    category_id: product.category_id || '',
   });
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    Inertia.post(route('products.store'), form);
+    Inertia.put(route('products.update', product.id), form);
   };
 
   return (
     <AuthenticatedLayout
       auth={auth}
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Novo Produto</h2>}
+      header={<h2 className="text-xl font-semibold text-gray-800">Editar Produto</h2>}
     >
-      <Head title="Cadastrar Produto" />
+      <Head title="Editar Produto" />
 
       <div className="py-12">
         <div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
@@ -41,7 +41,7 @@ export default function Create({ user, categories }) {
               <span className="mx-2">/</span>
               <Link href={route('products.index')} className="hover:underline">Produtos</Link>
               <span className="mx-2">/</span>
-              <span className="text-gray-700 font-medium">Cadastrar</span>
+              <span className="text-gray-700 font-medium">Editar</span>
             </nav>
 
             <Link
@@ -58,8 +58,9 @@ export default function Create({ user, categories }) {
                 <label className="block text-sm font-medium text-gray-700">Nome</label>
                 <input
                   name="name"
-                  className="w-full border rounded p-2"
+                  value={form.name}
                   onChange={handleChange}
+                  className="w-full border rounded p-2"
                 />
               </div>
 
@@ -67,9 +68,10 @@ export default function Create({ user, categories }) {
                 <label className="block text-sm font-medium text-gray-700">Descrição</label>
                 <textarea
                   name="description"
-                  className="w-full border rounded p-2"
+                  value={form.description}
                   onChange={handleChange}
-                ></textarea>
+                  className="w-full border rounded p-2"
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -78,8 +80,9 @@ export default function Create({ user, categories }) {
                   <input
                     name="quantity"
                     type="number"
-                    className="w-full border rounded p-2"
+                    value={form.quantity}
                     onChange={handleChange}
+                    className="w-full border rounded p-2"
                   />
                 </div>
 
@@ -88,8 +91,10 @@ export default function Create({ user, categories }) {
                   <input
                     name="price"
                     type="number"
-                    className="w-full border rounded p-2"
+                    step="0.01"
+                    value={form.price}
                     onChange={handleChange}
+                    className="w-full border rounded p-2"
                   />
                 </div>
 
@@ -97,15 +102,13 @@ export default function Create({ user, categories }) {
                   <label className="block text-sm font-medium text-gray-700">Categoria</label>
                   <select
                     name="category_id"
-                    className="w-full border rounded p-2"
-                    onChange={handleChange}
                     value={form.category_id}
+                    onChange={handleChange}
+                    className="w-full border rounded p-2"
                   >
                     <option value="">Selecione...</option>
                     {categories.map(c => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
+                      <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
                   </select>
                 </div>
@@ -115,8 +118,9 @@ export default function Create({ user, categories }) {
                 <label className="block text-sm font-medium text-gray-700">SKU</label>
                 <input
                   name="sku"
-                  className="w-full border rounded p-2"
+                  value={form.sku}
                   onChange={handleChange}
+                  className="w-full border rounded p-2"
                 />
               </div>
 
@@ -125,7 +129,7 @@ export default function Create({ user, categories }) {
                   type="submit"
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                 >
-                  Cadastrar
+                  Salvar alterações
                 </button>
               </div>
             </form>

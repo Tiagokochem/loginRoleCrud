@@ -46,7 +46,7 @@ class ProductApiController extends Controller
             'description' => 'nullable|string',
             'quantity' => 'integer|min:0',
             'price' => 'numeric|min:0',
-            'category' => 'string|max:100',
+            'category_id' => 'exists:categories,id',
             'sku' => "string|max:50|unique:products,sku,{$product->id}",
         ]);
 
