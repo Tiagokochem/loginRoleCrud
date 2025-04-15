@@ -123,6 +123,7 @@ docker run --rm \
 ![admin](https://github.com/user-attachments/assets/ac22f249-210e-492b-92fb-53202bd19df7)
 ![cadastro](https://github.com/user-attachments/assets/b3df99fe-42c5-4a0b-b829-494fc462536a)
 ![categoria](https://github.com/user-attachments/assets/2e2f6d25-bfd6-43f2-adbc-843c09885674)
+![doc](https://github.com/user-attachments/assets/c8f53800-24a0-444d-94f0-34f1022c73b9)
 
 
 
