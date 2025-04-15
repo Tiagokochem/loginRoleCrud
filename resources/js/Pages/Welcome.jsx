@@ -36,7 +36,7 @@ export default function Welcome({ auth }) {
             <div className="bg-gray-700 p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-bold mb-2">🧩 Tecnologias</h3>
               <ul className="list-disc list-inside text-sm text-gray-300">
-                <li>Laravel 10 + Breeze</li>
+                <li>Laravel 12 + Breeze</li>
                 <li>React.js + Inertia.js</li>
                 <li>TailwindCSS</li>
                 <li>JWT Auth</li>
