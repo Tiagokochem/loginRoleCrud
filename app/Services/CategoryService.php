@@ -8,8 +8,11 @@ class CategoryService
 {
     public function listAll()
     {
-        return Category::all();
+        return cache()->remember('categories.all', now()->addMinutes(10), function () {
+            return Category::select('id', 'name')->get();
+        });
     }
+
 
     public function create(array $data): Category
     {

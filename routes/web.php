@@ -105,6 +105,12 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 });
 
+Route::get('/dev/clear-cache', function () {
+    cache()->forget('categories.all');
+    return 'Cache de categorias limpo!';
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Autenticação (Laravel Breeze / Fortify)
