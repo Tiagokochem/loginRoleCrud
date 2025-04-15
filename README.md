@@ -6,7 +6,7 @@ Este projeto que consiste consiste em um sistema completo de controle de estoque
 
 ## 🚀 Tecnologias Utilizadas
 
-- Laravel 10 (API REST)
+- Laravel 12 (API REST)
 - React.js + Vite + Inertia.js
 - TailwindCSS
 - Laravel Breeze (auth + frontend)
