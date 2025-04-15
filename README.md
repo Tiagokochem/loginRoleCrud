@@ -26,6 +26,14 @@ Este projeto que consiste consiste em um sistema completo de controle de estoque
 
 ---
 
+## ✅ 🧙 Usuários de Teste
+          Nome	    Email	                  Senha	          Role
+Admin     User	    admin@teste.com	        password	      admin
+Operador  User	    operador@teste.com	    password	      operador
+Usuário   Comum	    usuario@teste.com	      password	      usuario
+
+
+
 ## ✅ Funcionalidades
 
 - Autenticação com JWT
