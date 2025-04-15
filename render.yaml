@@ -1,10 +1,10 @@
-services:
-  - type: web
-    name: laravel-backend
-    env: docker
-    plan: free
-    region: oregon
-    dockerfilePath: ./Dockerfile
-    buildCommand: ""
-    startCommand: ""
-    healthCheckPath: /
+# services:
+#   - type: web
+#     name: laravel-backend
+#     env: docker
+#     plan: free
+#     region: oregon
+#     dockerfilePath: ./Dockerfile
+#     buildCommand: ""
+#     startCommand: ""
+#     healthCheckPath: /
