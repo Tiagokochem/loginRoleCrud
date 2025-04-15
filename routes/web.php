@@ -67,12 +67,8 @@ Route::middleware('auth')->group(function () {
 | Rotas de Produtos (painel web)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->get('/products', function () {
-    return Inertia::render('Products/Index', [
-        'products' => Product::all(),
-        'user' => auth()->user(),
-    ]);
-})->name('products.index');
+Route::middleware(['auth'])->get('/products', [ProductController::class, 'index'])->name('products.index');
+
 
 Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::get('/products/create', function () {
