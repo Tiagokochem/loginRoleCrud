@@ -4,53 +4,71 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryStoreRequest;
-use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CategoryApiController extends Controller
 {
-    public function index(): JsonResponse
+    protected CategoryService $service;
+
+    public function __construct(CategoryService $service)
     {
-        $categories = Category::all();
-        return response()->json($categories);
+        $this->service = $service;
     }
 
-    public function store(CategoryStoreRequest $request)
+    public function index(): JsonResponse
     {
-        $category = Category::create($request->validated());
-    
+        return response()->json($this->service->listAll());
+    }
+
+    public function store(CategoryStoreRequest $request): JsonResponse
+    {
+        $category = $this->service->create($request->validated());
+
         return response()->json([
             'message' => 'Categoria criada com sucesso.',
             'data' => $category,
         ], 201);
     }
-    
-    public function show(Category $category): JsonResponse
+
+    public function destroy($id): JsonResponse
     {
+        $category = $this->service->find($id);
+
+        if (!$category) {
+            return response()->json(['error' => 'Categoria não encontrada.'], 404);
+        }
+
+        $this->service->delete($category);
+
+        return response()->json(['message' => 'Categoria excluída com sucesso.']);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $category = $this->service->find($id);
+
+        if (!$category) {
+            return response()->json(['error' => 'Categoria não encontrada.'], 404);
+        }
+
         return response()->json($category);
     }
 
-    public function update(Request $request, Category $category): JsonResponse
+    public function update(CategoryStoreRequest $request, $id): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        $category = $this->service->find($id);
 
-        $category->update($validated);
+        if (!$category) {
+            return response()->json(['error' => 'Categoria não encontrada.'], 404);
+        }
+
+        $category->update($request->validated());
 
         return response()->json([
             'message' => 'Categoria atualizada com sucesso.',
-            'data' => $category,
+            'data' => $category
         ]);
-    }
-
-    public function destroy(Category $category): JsonResponse
-    {
-        $category->delete();
-
-        return response()->json([
-            'message' => 'Categoria removida com sucesso.',
-        ], 204);
     }
 }
